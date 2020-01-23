@@ -28,7 +28,7 @@ Build and push the image:
 Generate StanLee ORM:
   stage: gen
   script:
-    - docker run --rm -t --entrypoint sqlacodegen -v $PWD:/mnt "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME" mysql://${DBUID}:${DBPID}@rchmonapps01.fnoc.local/StanLee --outfile /mnt/sldb.py
+    - docker run --rm -t --entrypoint sqlacodegen "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME" mysql://${DBUID}:${DBPID}@rchmonapps01.fnoc.local/StanLee > sldb.py
   artifacts:
     paths:
       - sldb.py
