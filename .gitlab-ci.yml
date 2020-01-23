@@ -5,6 +5,7 @@ image: docker:latest
 stages:
   - check
   - build
+  - gen
 
 variables:
   OIC_VERSION: $CI_COMMIT_REF_NAME
@@ -23,3 +24,11 @@ Build and push the image:
   script:
     - docker build -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
+
+Generate StanLee ORM:
+  stage: gen
+  script:
+    - docker run --rm -t --entrypoint sqlacodegen -v $PWD:/mnt "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME" mysql://${DBUID}:${DBPID}@rchmonapps01.fnoc.local/StanLee --outfile /mnt/sldb.py
+  artifacs:
+    paths:
+      - sldb.py
