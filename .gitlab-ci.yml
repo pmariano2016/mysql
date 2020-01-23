@@ -1,0 +1,25 @@
+# Assembled by Connor Ness
+
+image: docker:latest
+
+stages:
+  - check
+  - build
+
+variables:
+  OIC_VERSION: $CI_COMMIT_REF_NAME
+
+before_script:
+  - docker login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" "$CI_REGISTRY"
+
+Check Registry Login:
+  stage: check
+  script:
+    - echo using image tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
+    - echo OIC_VERSION is $OIC_VERSION
+
+Build and push the image:
+  stage: build
+  script:
+    - docker build -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
