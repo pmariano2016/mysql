@@ -34,6 +34,9 @@ class CircuitDatum(Base):
     DisplayName = Column(String(128))
     Smoothing = Column(INTEGER(10), nullable=False, server_default=text("'1'"))
 
+    def __repr__(self):
+        return "<{0} UUID: {1} - TID: {2}>".format(self.__class__.__name__, self.UniqueID, self.TID)
+
 
 def _abort_ro():
     print("Session in Read-Only Mode!")
@@ -54,6 +57,3 @@ def db_session_setup(constring, readonly=True):
     if readonly:
         session.commit = _abort_ro
     return session
-
-
-
